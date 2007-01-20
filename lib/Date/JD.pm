@@ -7,8 +7,8 @@ Date::JD - conversion between flavours of Julian Date
 	use Date::JD qw(jd_to_mjd mjd_to_cjdn cjdn_to_rd);
 
 	$mjd = jd_to_mjd($jd);
-	($cjdn, $tod) = mjd_to_cjdn($mjd, $tz);
-	$rd = cjdn_to_rd($cjdn, $tod);
+	($cjdn, $cjdf) = mjd_to_cjdn($mjd, $tz);
+	$rd = cjdn_to_rd($cjdn, $cjdf);
 
 	# and 253 other conversion functions
 
@@ -45,11 +45,15 @@ In the interests of orthogonality, all flavours of day count come in both
 integral and fractional varieties.  Generally, there is a quantity named
 "XYZD" ("XYZ Date") which is a real count of days since a particular epoch
 (an integer plus a fraction) and a corresponding quantity named "XYZDN"
-("XYZ Day Number) which is a count of complete days since the same epoch.
-XYZDN is the integral part of XYZD.  This pattern is derived from JD
-(Julian Date) and JDN (Julian Day Number) which have this correspondence.
-Most of the other flavours of day count listed below conventionally come
-in only one of these varieties.
+("XYZ Day Number") which is a count of complete days since the same epoch.
+XYZDN is the integral part of XYZD.  There is also a quantity named
+"XYZDF" ("XYZ Day Fraction") which is a count of fractional days since the
+XYZDN changed.  XYZDF is the fractional part of XYZD, in the range [0, 1).
+
+This quantity naming pattern is derived from JD (Julian Date) and JDN
+(Julian Day Number) which have the described correspondence.  Most of
+the other flavours of day count listed below conventionally come in only
+one of the two varieties.  The "XYZDF" name type is a neologism.
 
 All calendar dates given are in ISO 8601 form (Gregorian calendar with
 astronomical year numbering).  An hour number is appended to each date,
@@ -164,7 +168,7 @@ use strict;
 
 use Carp qw(croak);
 
-our $VERSION = "0.000";
+our $VERSION = "0.001";
 
 use base qw(Exporter);
 our @EXPORT_OK;
@@ -254,57 +258,58 @@ represented as a fractional day count of output flavour.
 =item cjd_to_cjdn(CJD)
 
 These conversion functions go from a fractional count to an integral
-count.  The input identifies a point in time, as a fractional day count of
-input flavour.  The function determines the day number of output flavour
-that applies at that instant.  In scalar context only this integral day
-number is returned.  In list context a list of two values is returned:
-the integral day number and the time of day as a fraction in the range
-[0, 1).  The time of day is relative to the instant that the integral
-day number started to apply, whether that is noon or midnight.
+count.  The input identifies a point in time, as a fractional day count
+of input flavour.  The function determines the day number of output
+flavour that applies at that instant.  In scalar context only this
+integral day number is returned.  In list context a list of two values
+is returned: the integral day number and the day fraction in the range
+[0, 1).  The day fraction, representing the time of day, is relative to
+the instant that the integral day number started to apply, whether that
+is noon or midnight.
 
-=item jdn_to_jd(JD, TOD)
+=item jdn_to_jd(JD, JDF)
 
-=item jdn_to_mjd(JD, TOD)
+=item jdn_to_mjd(JD, JDF)
 
-=item jdn_to_cjd(JD, TOD, ZONE)
+=item jdn_to_cjd(JD, JDF, ZONE)
 
-=item mjdn_to_jd(MJD, TOD)
+=item mjdn_to_jd(MJD, MJDF)
 
-=item mjdn_to_mjd(MJD, TOD)
+=item mjdn_to_mjd(MJD, MJDF)
 
-=item mjdn_to_cjd(MJD, TOD, ZONE)
+=item mjdn_to_cjd(MJD, MJDF, ZONE)
 
-=item cjdn_to_jd(CJD, TOD, ZONE)
+=item cjdn_to_jd(CJD, CJDF, ZONE)
 
-=item cjdn_to_mjd(CJD, TOD, ZONE)
+=item cjdn_to_mjd(CJD, CJDF, ZONE)
 
-=item cjdn_to_cjd(CJD, TOD)
+=item cjdn_to_cjd(CJD, CJDF)
 
 These conversion functions go from an integral count to a fractional
-count.  The input identifies a point in time, as an integral day number
-of input flavour plus the time of day as a fraction in the range [0, 1).
-The time of day is relative to the instant that the integral day number
-started to apply, whether that is noon or midnight.  The identified
-point in time is returned in the form of a fractional day number of
-output flavour.
+count.  The input identifies a point in time, as an integral day number of
+input flavour plus day fraction in the range [0, 1).  The day fraction,
+representing the time of day, is relative to the instant that the
+integral day number started to apply, whether that is noon or midnight.
+The identified point in time is returned in the form of a fractional
+day number of output flavour.
 
-=item jdn_to_jdn(JDN[, TOD])
+=item jdn_to_jdn(JDN[, JDF])
 
-=item jdn_to_mjdn(JDN, TOD)
+=item jdn_to_mjdn(JDN, JDF)
 
-=item jdn_to_cjdn(JDN, TOD, ZONE)
+=item jdn_to_cjdn(JDN, JDF, ZONE)
 
-=item mjdn_to_jdn(MJDN, TOD)
+=item mjdn_to_jdn(MJDN, MJDF)
 
-=item mjdn_to_mjdn(MJDN[, TOD])
+=item mjdn_to_mjdn(MJDN[, MJDF])
 
-=item mjdn_to_cjdn(MJDN, TOD, ZONE)
+=item mjdn_to_cjdn(MJDN, MJDF, ZONE)
 
-=item cjdn_to_jdn(CJDN, TOD, ZONE)
+=item cjdn_to_jdn(CJDN, CJDF, ZONE)
 
-=item cjdn_to_mjdn(CJDN, TOD, ZONE)
+=item cjdn_to_mjdn(CJDN, CJDF, ZONE)
 
-=item cjdn_to_cjdn(CJDN[, TOD])
+=item cjdn_to_cjdn(CJDN[, CJDF])
 
 These conversion functions go from an integral count to another integral
 count.  They can be used either to convert only a day number or to
@@ -313,21 +318,22 @@ convention is identical to that for C<jd_to_jdn> et al, including the
 variation depending on calling context.
 
 If converting a point in time, the input identifies it as an integral
-day number of input flavour plus the time of day as a fraction in the
-range [0, 1).  The time of day is relative to the instant that the
-integral day number started to apply, whether that is noon or midnight.
-The same point in time is returned as a list of integral day number of
-output flavour and the time of day as a fraction in the range [0, 1).
+day number of input flavour plus day fraction in the range [0, 1).
+The day fraction, representing the time of day, is relative to the
+instant that the integral day number started to apply, whether that is
+noon or midnight.  The same point in time is (in list context) returned
+as a list of integral day number of output flavour and the day fraction
+in the range [0, 1).
 
 If it is desired only to convert integral day numbers, it is still
 necessary to consider time of day, because in the general case the days
 are delimited differently by the input and output day count flavours.
-A time of day must be specified if there is such a difference, and
+A day fraction must be specified if there is such a difference, and
 the conversion is calculated for the point in time thus identified.
 To perform a conversion for a large part of the day, give a representative
 time of day within it.  If converting between systems that delimit days
-identically (e.g., between JD and RJD), the time of day is optional and
-defaults to zero.
+identically (e.g., between JD and RJD), the day fraction is optional
+and defaults to zero.
 
 =cut
 
@@ -345,7 +351,7 @@ if($@ ne "") {
 sub check_dn($$) {
 	croak "purported day number $_[0] is not an integer"
 		unless ref($_[0]) ? $_[0]->is_int : $_[0] == int($_[0]);
-	croak "time of day $_[1] is out of range [0, 1)"
+	croak "purported day fraction $_[1] is out of range [0, 1)"
 		unless $_[1] >= 0 && $_[1] < 1;
 }
 
@@ -385,7 +391,7 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 	my($tp, $tc);
 	if($ediffh == 0 && $src_zone == $dst_zone) {
 		$tp = ";";
-		$tc = "\$_[1] ||= 0;";
+		$tc = "push \@_, 0 if \@_ == 1;";
 	} else {
 		$tp = $tc = "";
 	}
@@ -410,7 +416,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2006, 2007 Andrew Main (Zefram) <zefram@fysh.org>
 
 This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

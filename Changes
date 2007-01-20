@@ -1,3 +1,11 @@
+version 0.001; 2007-01-20
+
+  * bugfix: functions should not modify their arguments (the functions
+    such as rjdn_to_jdn() attempted to if given a zero day fraction)
+
+  * use "day fraction" and "XYZDF" terminology in place of the less
+    specific "time of day" and "TOD"
+
 version 0.000; 2006-05-18
 
   * initial released version
