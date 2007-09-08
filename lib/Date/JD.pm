@@ -68,39 +68,46 @@ then this is explicitly noted.
 =item JD (Julian Date)
 
 days elapsed since -4713-11-24T12Z.  This epoch is the most recent
-coincidence of the first year of the Metonic cycle, indiction cycle,
-and day-of-week cycle, using the Julian calendar.  It was correspondingly
-named after the Julian calendar, and thus after Julius Caesar.
+coincidence of the first year of the Metonic cycle, indiction cycle, and
+day-of-week cycle, using the Julian calendar.  It was correspondingly
+named after the Julian calendar, and thus after Julius Caesar.  Some
+information can be found at L<http://en.wikipedia.org/wiki/Julian_day>.
 
 =item RJD (Reduced Julian Date)
 
-days elapsed since 1858-11-16T12Z (JD 2400000).
+days elapsed since 1858-11-16T12Z (JD 2400000.0).  Rarely used.
 
 =item MJD (Modified Julian Date)
 
-days elapsed since 1858-11-17T00Z (JD 2400000.5).
+days elapsed since 1858-11-17T00Z (JD 2400000.5).  This was introduced by
+the Smithsonian Astrophysical Observatory in 1957, and is recommended for
+general use by the International Astronomical Union and other authorities.
 
 =item DJD (Dublin Julian Date)
 
-days elapsed since 1899-12-31T12Z (JD 2415020).  This was invented by
-the International Astronomical Union, and the epoch is the J1900.0 epoch
-used in astronomy.  (Note: not B1900.0, which is a few hours later.)
+days elapsed since 1899-12-31T12Z (JD 2415020.0).  This was invented by
+the International Astronomical Union, and the epoch in Terrestrial Time
+is the J1900.0 epoch used in astronomy.  (Note: not B1900.0, which is
+a few hours later.)  It is rarely used.
 
 =item TJD (Truncated Julian Date)
 
-days elapsed since 1968-05-24T00Z (JD 2440000.5).  There is a rumour
-that it's defined cyclically, as (JD - 0.5) mod 10000, but see
+days elapsed since 1968-05-24T00Z (JD 2440000.5).  This is primarily
+used by NASA, who devised it during the Apollo era.  There is a
+rumour that it's defined cyclically, as (JD - 0.5) mod 10000, but see
 L<http://cossc.gsfc.nasa.gov/cossc/batse/hilev/TJD.TABLE>.
 
 =item CJD (Chronological Julian Date)
 
-days elapsed since -4713-11-24T00 in the timezone of interest.  In the
-UT timezone, the CJD is equal to the JD plus 0.5.
+days elapsed since -4713-11-24T00 in the timezone of interest.
+CJD = JD + 0.5 + Zoff, where Zoff is the timezone offset in
+fractional days.  This was devised by Peter Meyer, and described in
+L<http://www.hermetic.ch/cal_stud/cjd.htm>.
 
 =item RD (Rata Die)
 
 days elapsed since 0000-12-31T00 in the timezone of interest (CJD
-1721425).  This is defined in the book Calendrical Calculations.
+1721425.0).  This is defined in the book Calendrical Calculations.
 Confusingly, in the book the integral form is also called "RD".
 The integral form is called "RDN" by this module to avoid confusion,
 reserving the name "RD" for the fractional form.  (The book is best
@@ -110,7 +117,7 @@ and instances of muddled thinking.)
 =item LD (Lilian Date)
 
 days elapsed since 1582-10-14T00 in the timezone of interest (CJD
-2299160).  This epoch is the day before the day that the Gregorian
+2299160.0).  This epoch is the day before the day that the Gregorian
 calendar first went into use.  It is named after Aloysius Lilius, the
 inventor of the Gregorian calendar.
 
@@ -168,16 +175,16 @@ use strict;
 
 use Carp qw(croak);
 
-our $VERSION = "0.001";
+our $VERSION = "0.002";
 
 use base qw(Exporter);
 our @EXPORT_OK;
 
 my %jd_flavours = (
 	jd => { epoch_jd => 0 },
-	rjd => { epoch_jd => 2400000 },
+	rjd => { epoch_jd => 2400000.0 },
 	mjd => { epoch_jd => 2400000.5 },
-	djd => { epoch_jd => 2415020 },
+	djd => { epoch_jd => 2415020.0 },
 	tjd => { epoch_jd => 2440000.5 },
 	cjd => { epoch_jd => -0.5, zone => 1 },
 	rd => { epoch_jd => 1721424.5, zone => 1 },
@@ -267,23 +274,23 @@ is returned: the integral day number and the day fraction in the range
 the instant that the integral day number started to apply, whether that
 is noon or midnight.
 
-=item jdn_to_jd(JD, JDF)
+=item jdn_to_jd(JDN, JDF)
 
-=item jdn_to_mjd(JD, JDF)
+=item jdn_to_mjd(JDN, JDF)
 
-=item jdn_to_cjd(JD, JDF, ZONE)
+=item jdn_to_cjd(JDN, JDF, ZONE)
 
-=item mjdn_to_jd(MJD, MJDF)
+=item mjdn_to_jd(MJDN, MJDF)
 
-=item mjdn_to_mjd(MJD, MJDF)
+=item mjdn_to_mjd(MJDN, MJDF)
 
-=item mjdn_to_cjd(MJD, MJDF, ZONE)
+=item mjdn_to_cjd(MJDN, MJDF, ZONE)
 
-=item cjdn_to_jd(CJD, CJDF, ZONE)
+=item cjdn_to_jd(CJDN, CJDF, ZONE)
 
-=item cjdn_to_mjd(CJD, CJDF, ZONE)
+=item cjdn_to_mjd(CJDN, CJDF, ZONE)
 
-=item cjdn_to_cjd(CJD, CJDF)
+=item cjdn_to_cjd(CJDN, CJDF)
 
 These conversion functions go from an integral count to a fractional
 count.  The input identifies a point in time, as an integral day number of
@@ -337,7 +344,7 @@ and defaults to zero.
 
 =cut
 
-eval {
+eval { local $SIG{__DIE__};
 	require POSIX;
 	*floor = \&POSIX::floor;
 };
@@ -407,6 +414,7 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 =head1 SEE ALSO
 
 L<Date::ISO8601>,
+L<Date::MSD>,
 L<DateTime>,
 L<Time::UTC>
 

@@ -2,11 +2,16 @@ use Test::More tests => 1 + 8*2*8*8*4;
 
 BEGIN { use_ok "Date::JD", qw(jd_to_jd jd_to_mjdn mjdn_to_cjd cjdn_to_ldn); }
 
-use Math::BigRat;
+my $have_bigrat = eval("use Math::BigRat 0.04; 1");
+
+sub match($$) {
+	my($a, $b) = @_;
+	ok ref($a) eq ref($b) && $a == $b;
+}
 
 my @prep = (
 	sub { $_[0] },
-	sub { Math::BigRat->new($_[0]) },
+	sub { $have_bigrat ? Math::BigRat->new($_[0]) : undef },
 );
 
 my %zoneful = (
@@ -36,28 +41,30 @@ sub check($$) {
 		my $sd = $dates->{$src};
 		my $dd = $dates->{$dst};
 		my @zone = $zoneful{$src} == $zoneful{$dst} ? () : ($zone);
-		foreach my $prep (@prep) {
+		foreach my $prep (@prep) { SKIP: {
 			my $psd = $prep->($sd);
 			my $pdd = $prep->($dd);
+			skip "numeric type unavailable", 8
+				unless defined($psd) && defined($pdd);
 			my $func = \&{"Date::JD::${src}_to_${dst}"};
-			is $func->($psd, @zone), $pdd;
+			match $func->($psd, @zone), $pdd;
 			$func = \&{"Date::JD::${src}_to_${dst}n"};
 			my $dn0 = $func->($psd, @zone);
 			my($dn1, $dtod) = $func->($psd, @zone);
-			is $dn0, $dn1;
+			match $dn0, $dn1;
 			ok $dtod >= 0 && $dtod < 1;
-			is $dn1 + $dtod, $pdd;
+			match $dn1 + $dtod, $pdd;
 			$func = \&{"Date::JD::${src}n_to_${dst}"};
 			my $psdn = flr($psd);
 			my $stod = $psd - $psdn;
-			is $func->($psdn, $stod, @zone), $pdd;
+			match $func->($psdn, $stod, @zone), $pdd;
 			$func = \&{"Date::JD::${src}n_to_${dst}n"};
 			$dn0 = $func->($psdn, $stod, @zone);
 			($dn1, $dtod) = $func->($psdn, $stod, @zone);
-			is $dn0, $dn1;
+			match $dn0, $dn1;
 			ok $dtod >= 0 && $dtod < 1;
-			is $dn1 + $dtod, $pdd;
-		}
+			match $dn1 + $dtod, $pdd;
+		} }
 	} }
 }
 

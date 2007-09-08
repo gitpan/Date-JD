@@ -1,3 +1,35 @@
+version 0.002; 2007-09-08
+
+  * bugfix: in initialisation, override any ambient $SIG{__DIE__}
+    handler when using eval { }
+
+  * in documentation, use correct parameter name "...DN" for jdn_to_mjd()
+    and similar functions
+
+  * test explicitly for correct class of result
+
+  * in documentation, more explicit definition of CJD in terms of JD
+
+  * in documentation, note that the DJD epoch coincides with J1900.0
+    only in Terrestrial Time
+
+  * in documentation, add more notes on the origin of the day count
+    systems
+
+  * include explicit ".0" on integral JD values, for clarity
+
+  * in documentation, reference Date::MSD (the Martian equivalent of
+    this module)
+
+  * build with Module::Build instead of ExtUtils::MakeMaker
+
+  * complete dependency list
+
+  * express relationship with versions of Math::BigRat as a conflict
+    rather than a dependency
+
+  * include signature in distribution
+
 version 0.001; 2007-01-20
 
   * bugfix: functions should not modify their arguments (the functions
