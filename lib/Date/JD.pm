@@ -175,7 +175,7 @@ use strict;
 
 use Carp qw(croak);
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 use base qw(Exporter);
 our @EXPORT_OK;
@@ -204,14 +204,10 @@ With C<Math::BigRat> the results are exact.
 
 There are conversion functions between all pairs of day count systems.
 This is a total of 256 conversion functions (including 16 identity
-functions), so they are not all listed below.  To illustrate all
-conversion function interfaces, only the 36 conversions involving JD,
-MJD, and CJD are explicitly described.  Everything that is said for JD
-also applies to RJD and DJD; everything for MJD also applies to TJD;
-and everything for CJD also applies to RD and LD.
+functions).
 
 When converting between timezone-relative counts (CJD, RD, LD) and
-absolute counts (JD, MJD, et al), the timezone that is being used must
+absolute counts (JD, RJD, MJD, DJD, TJD), the timezone that is being used must
 be specified.  It is given in a ZONE argument as a fractional number of
 days offset from Universal Time.  For example, US Central Standard Time,
 6 hours behind UT, would be specified as a ZONE argument of -0.25.
@@ -225,21 +221,131 @@ and MJD) or between timezone-relative counts (e.g., between CJD and LD).
 
 =item jd_to_jd(JD)
 
+=item jd_to_rjd(JD)
+
 =item jd_to_mjd(JD)
+
+=item jd_to_djd(JD)
+
+=item jd_to_tjd(JD)
 
 =item jd_to_cjd(JD, ZONE)
 
+=item jd_to_rd(JD, ZONE)
+
+=item jd_to_ld(JD, ZONE)
+
+=item rjd_to_jd(RJD)
+
+=item rjd_to_rjd(RJD)
+
+=item rjd_to_mjd(RJD)
+
+=item rjd_to_djd(RJD)
+
+=item rjd_to_tjd(RJD)
+
+=item rjd_to_cjd(RJD, ZONE)
+
+=item rjd_to_rd(RJD, ZONE)
+
+=item rjd_to_ld(RJD, ZONE)
+
 =item mjd_to_jd(MJD)
+
+=item mjd_to_rjd(MJD)
 
 =item mjd_to_mjd(MJD)
 
+=item mjd_to_djd(MJD)
+
+=item mjd_to_tjd(MJD)
+
 =item mjd_to_cjd(MJD, ZONE)
+
+=item mjd_to_rd(MJD, ZONE)
+
+=item mjd_to_ld(MJD, ZONE)
+
+=item djd_to_jd(DJD)
+
+=item djd_to_rjd(DJD)
+
+=item djd_to_mjd(DJD)
+
+=item djd_to_djd(DJD)
+
+=item djd_to_tjd(DJD)
+
+=item djd_to_cjd(DJD, ZONE)
+
+=item djd_to_rd(DJD, ZONE)
+
+=item djd_to_ld(DJD, ZONE)
+
+=item tjd_to_jd(TJD)
+
+=item tjd_to_rjd(TJD)
+
+=item tjd_to_mjd(TJD)
+
+=item tjd_to_djd(TJD)
+
+=item tjd_to_tjd(TJD)
+
+=item tjd_to_cjd(TJD, ZONE)
+
+=item tjd_to_rd(TJD, ZONE)
+
+=item tjd_to_ld(TJD, ZONE)
 
 =item cjd_to_jd(CJD, ZONE)
 
+=item cjd_to_rjd(CJD, ZONE)
+
 =item cjd_to_mjd(CJD, ZONE)
 
+=item cjd_to_djd(CJD, ZONE)
+
+=item cjd_to_tjd(CJD, ZONE)
+
 =item cjd_to_cjd(CJD)
+
+=item cjd_to_rd(CJD)
+
+=item cjd_to_ld(CJD)
+
+=item rd_to_jd(RD, ZONE)
+
+=item rd_to_rjd(RD, ZONE)
+
+=item rd_to_mjd(RD, ZONE)
+
+=item rd_to_djd(RD, ZONE)
+
+=item rd_to_tjd(RD, ZONE)
+
+=item rd_to_cjd(RD)
+
+=item rd_to_rd(RD)
+
+=item rd_to_ld(RD)
+
+=item ld_to_jd(LD, ZONE)
+
+=item ld_to_rjd(LD, ZONE)
+
+=item ld_to_mjd(LD, ZONE)
+
+=item ld_to_djd(LD, ZONE)
+
+=item ld_to_tjd(LD, ZONE)
+
+=item ld_to_cjd(LD)
+
+=item ld_to_rd(LD)
+
+=item ld_to_ld(LD)
 
 Conversions between fractional day counts principally involve a change
 of epoch.  The input identifies a point in time, as a fractional day
@@ -248,21 +354,131 @@ represented as a fractional day count of output flavour.
 
 =item jd_to_jdn(JD)
 
+=item jd_to_rjdn(JD)
+
 =item jd_to_mjdn(JD)
+
+=item jd_to_djdn(JD)
+
+=item jd_to_tjdn(JD)
 
 =item jd_to_cjdn(JD, ZONE)
 
+=item jd_to_rdn(JD, ZONE)
+
+=item jd_to_ldn(JD, ZONE)
+
+=item rjd_to_jdn(RJD)
+
+=item rjd_to_rjdn(RJD)
+
+=item rjd_to_mjdn(RJD)
+
+=item rjd_to_djdn(RJD)
+
+=item rjd_to_tjdn(RJD)
+
+=item rjd_to_cjdn(RJD, ZONE)
+
+=item rjd_to_rdn(RJD, ZONE)
+
+=item rjd_to_ldn(RJD, ZONE)
+
 =item mjd_to_jdn(MJD)
+
+=item mjd_to_rjdn(MJD)
 
 =item mjd_to_mjdn(MJD)
 
+=item mjd_to_djdn(MJD)
+
+=item mjd_to_tjdn(MJD)
+
 =item mjd_to_cjdn(MJD, ZONE)
+
+=item mjd_to_rdn(MJD, ZONE)
+
+=item mjd_to_ldn(MJD, ZONE)
+
+=item djd_to_jdn(DJD)
+
+=item djd_to_rjdn(DJD)
+
+=item djd_to_mjdn(DJD)
+
+=item djd_to_djdn(DJD)
+
+=item djd_to_tjdn(DJD)
+
+=item djd_to_cjdn(DJD, ZONE)
+
+=item djd_to_rdn(DJD, ZONE)
+
+=item djd_to_ldn(DJD, ZONE)
+
+=item tjd_to_jdn(TJD)
+
+=item tjd_to_rjdn(TJD)
+
+=item tjd_to_mjdn(TJD)
+
+=item tjd_to_djdn(TJD)
+
+=item tjd_to_tjdn(TJD)
+
+=item tjd_to_cjdn(TJD, ZONE)
+
+=item tjd_to_rdn(TJD, ZONE)
+
+=item tjd_to_ldn(TJD, ZONE)
 
 =item cjd_to_jdn(CJD, ZONE)
 
+=item cjd_to_rjdn(CJD, ZONE)
+
 =item cjd_to_mjdn(CJD, ZONE)
 
+=item cjd_to_djdn(CJD, ZONE)
+
+=item cjd_to_tjdn(CJD, ZONE)
+
 =item cjd_to_cjdn(CJD)
+
+=item cjd_to_rdn(CJD)
+
+=item cjd_to_ldn(CJD)
+
+=item rd_to_jdn(RD, ZONE)
+
+=item rd_to_rjdn(RD, ZONE)
+
+=item rd_to_mjdn(RD, ZONE)
+
+=item rd_to_djdn(RD, ZONE)
+
+=item rd_to_tjdn(RD, ZONE)
+
+=item rd_to_cjdn(RD)
+
+=item rd_to_rdn(RD)
+
+=item rd_to_ldn(RD)
+
+=item ld_to_jdn(LD, ZONE)
+
+=item ld_to_rjdn(LD, ZONE)
+
+=item ld_to_mjdn(LD, ZONE)
+
+=item ld_to_djdn(LD, ZONE)
+
+=item ld_to_tjdn(LD, ZONE)
+
+=item ld_to_cjdn(LD)
+
+=item ld_to_rdn(LD)
+
+=item ld_to_ldn(LD)
 
 These conversion functions go from a fractional count to an integral
 count.  The input identifies a point in time, as a fractional day count
@@ -276,21 +492,131 @@ is noon or midnight.
 
 =item jdn_to_jd(JDN, JDF)
 
+=item jdn_to_rjd(JDN, JDF)
+
 =item jdn_to_mjd(JDN, JDF)
+
+=item jdn_to_djd(JDN, JDF)
+
+=item jdn_to_tjd(JDN, JDF)
 
 =item jdn_to_cjd(JDN, JDF, ZONE)
 
+=item jdn_to_rd(JDN, JDF, ZONE)
+
+=item jdn_to_ld(JDN, JDF, ZONE)
+
+=item rjdn_to_jd(RJDN, RJDF)
+
+=item rjdn_to_rjd(RJDN, RJDF)
+
+=item rjdn_to_mjd(RJDN, RJDF)
+
+=item rjdn_to_djd(RJDN, RJDF)
+
+=item rjdn_to_tjd(RJDN, RJDF)
+
+=item rjdn_to_cjd(RJDN, RJDF, ZONE)
+
+=item rjdn_to_rd(RJDN, RJDF, ZONE)
+
+=item rjdn_to_ld(RJDN, RJDF, ZONE)
+
 =item mjdn_to_jd(MJDN, MJDF)
+
+=item mjdn_to_rjd(MJDN, MJDF)
 
 =item mjdn_to_mjd(MJDN, MJDF)
 
+=item mjdn_to_djd(MJDN, MJDF)
+
+=item mjdn_to_tjd(MJDN, MJDF)
+
 =item mjdn_to_cjd(MJDN, MJDF, ZONE)
+
+=item mjdn_to_rd(MJDN, MJDF, ZONE)
+
+=item mjdn_to_ld(MJDN, MJDF, ZONE)
+
+=item djdn_to_jd(DJDN, DJDF)
+
+=item djdn_to_rjd(DJDN, DJDF)
+
+=item djdn_to_mjd(DJDN, DJDF)
+
+=item djdn_to_djd(DJDN, DJDF)
+
+=item djdn_to_tjd(DJDN, DJDF)
+
+=item djdn_to_cjd(DJDN, DJDF, ZONE)
+
+=item djdn_to_rd(DJDN, DJDF, ZONE)
+
+=item djdn_to_ld(DJDN, DJDF, ZONE)
+
+=item tjdn_to_jd(TJDN, TJDF)
+
+=item tjdn_to_rjd(TJDN, TJDF)
+
+=item tjdn_to_mjd(TJDN, TJDF)
+
+=item tjdn_to_djd(TJDN, TJDF)
+
+=item tjdn_to_tjd(TJDN, TJDF)
+
+=item tjdn_to_cjd(TJDN, TJDF, ZONE)
+
+=item tjdn_to_rd(TJDN, TJDF, ZONE)
+
+=item tjdn_to_ld(TJDN, TJDF, ZONE)
 
 =item cjdn_to_jd(CJDN, CJDF, ZONE)
 
+=item cjdn_to_rjd(CJDN, CJDF, ZONE)
+
 =item cjdn_to_mjd(CJDN, CJDF, ZONE)
 
+=item cjdn_to_djd(CJDN, CJDF, ZONE)
+
+=item cjdn_to_tjd(CJDN, CJDF, ZONE)
+
 =item cjdn_to_cjd(CJDN, CJDF)
+
+=item cjdn_to_rd(CJDN, CJDF)
+
+=item cjdn_to_ld(CJDN, CJDF)
+
+=item rdn_to_jd(RDN, RDF, ZONE)
+
+=item rdn_to_rjd(RDN, RDF, ZONE)
+
+=item rdn_to_mjd(RDN, RDF, ZONE)
+
+=item rdn_to_djd(RDN, RDF, ZONE)
+
+=item rdn_to_tjd(RDN, RDF, ZONE)
+
+=item rdn_to_cjd(RDN, RDF)
+
+=item rdn_to_rd(RDN, RDF)
+
+=item rdn_to_ld(RDN, RDF)
+
+=item ldn_to_jd(LDN, LDF, ZONE)
+
+=item ldn_to_rjd(LDN, LDF, ZONE)
+
+=item ldn_to_mjd(LDN, LDF, ZONE)
+
+=item ldn_to_djd(LDN, LDF, ZONE)
+
+=item ldn_to_tjd(LDN, LDF, ZONE)
+
+=item ldn_to_cjd(LDN, LDF)
+
+=item ldn_to_rd(LDN, LDF)
+
+=item ldn_to_ld(LDN, LDF)
 
 These conversion functions go from an integral count to a fractional
 count.  The input identifies a point in time, as an integral day number of
@@ -302,21 +628,131 @@ day number of output flavour.
 
 =item jdn_to_jdn(JDN[, JDF])
 
+=item jdn_to_rjdn(JDN[, JDF])
+
 =item jdn_to_mjdn(JDN, JDF)
+
+=item jdn_to_djdn(JDN[, JDF])
+
+=item jdn_to_tjdn(JDN, JDF)
 
 =item jdn_to_cjdn(JDN, JDF, ZONE)
 
+=item jdn_to_rdn(JDN, JDF, ZONE)
+
+=item jdn_to_ldn(JDN, JDF, ZONE)
+
+=item rjdn_to_jdn(RJDN[, RJDF])
+
+=item rjdn_to_rjdn(RJDN[, RJDF])
+
+=item rjdn_to_mjdn(RJDN, RJDF)
+
+=item rjdn_to_djdn(RJDN[, RJDF])
+
+=item rjdn_to_tjdn(RJDN, RJDF)
+
+=item rjdn_to_cjdn(RJDN, RJDF, ZONE)
+
+=item rjdn_to_rdn(RJDN, RJDF, ZONE)
+
+=item rjdn_to_ldn(RJDN, RJDF, ZONE)
+
 =item mjdn_to_jdn(MJDN, MJDF)
+
+=item mjdn_to_rjdn(MJDN, MJDF)
 
 =item mjdn_to_mjdn(MJDN[, MJDF])
 
+=item mjdn_to_djdn(MJDN, MJDF)
+
+=item mjdn_to_tjdn(MJDN[, MJDF])
+
 =item mjdn_to_cjdn(MJDN, MJDF, ZONE)
+
+=item mjdn_to_rdn(MJDN, MJDF, ZONE)
+
+=item mjdn_to_ldn(MJDN, MJDF, ZONE)
+
+=item djdn_to_jdn(DJDN[, DJDF])
+
+=item djdn_to_rjdn(DJDN[, DJDF])
+
+=item djdn_to_mjdn(DJDN, DJDF)
+
+=item djdn_to_djdn(DJDN[, DJDF])
+
+=item djdn_to_tjdn(DJDN, DJDF)
+
+=item djdn_to_cjdn(DJDN, DJDF, ZONE)
+
+=item djdn_to_rdn(DJDN, DJDF, ZONE)
+
+=item djdn_to_ldn(DJDN, DJDF, ZONE)
+
+=item tjdn_to_jdn(TJDN, TJDF)
+
+=item tjdn_to_rjdn(TJDN, TJDF)
+
+=item tjdn_to_mjdn(TJDN[, TJDF])
+
+=item tjdn_to_djdn(TJDN, TJDF)
+
+=item tjdn_to_tjdn(TJDN[, TJDF])
+
+=item tjdn_to_cjdn(TJDN, TJDF, ZONE)
+
+=item tjdn_to_rdn(TJDN, TJDF, ZONE)
+
+=item tjdn_to_ldn(TJDN, TJDF, ZONE)
 
 =item cjdn_to_jdn(CJDN, CJDF, ZONE)
 
+=item cjdn_to_rjdn(CJDN, CJDF, ZONE)
+
 =item cjdn_to_mjdn(CJDN, CJDF, ZONE)
 
+=item cjdn_to_djdn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_tjdn(CJDN, CJDF, ZONE)
+
 =item cjdn_to_cjdn(CJDN[, CJDF])
+
+=item cjdn_to_rdn(CJDN[, CJDF])
+
+=item cjdn_to_ldn(CJDN[, CJDF])
+
+=item rdn_to_jdn(RDN, RDF, ZONE)
+
+=item rdn_to_rjdn(RDN, RDF, ZONE)
+
+=item rdn_to_mjdn(RDN, RDF, ZONE)
+
+=item rdn_to_djdn(RDN, RDF, ZONE)
+
+=item rdn_to_tjdn(RDN, RDF, ZONE)
+
+=item rdn_to_cjdn(RDN[, RDF])
+
+=item rdn_to_rdn(RDN[, RDF])
+
+=item rdn_to_ldn(RDN[, RDF])
+
+=item ldn_to_jdn(LDN, LDF, ZONE)
+
+=item ldn_to_rjdn(LDN, LDF, ZONE)
+
+=item ldn_to_mjdn(LDN, LDF, ZONE)
+
+=item ldn_to_djdn(LDN, LDF, ZONE)
+
+=item ldn_to_tjdn(LDN, LDF, ZONE)
+
+=item ldn_to_cjdn(LDN[, LDF])
+
+=item ldn_to_rdn(LDN[, LDF])
+
+=item ldn_to_ldn(LDN[, LDF])
 
 These conversion functions go from an integral count to another integral
 count.  They can be used either to convert only a day number or to
@@ -346,25 +782,25 @@ and defaults to zero.
 
 eval { local $SIG{__DIE__};
 	require POSIX;
-	*floor = \&POSIX::floor;
+	*_floor = \&POSIX::floor;
 };
 if($@ ne "") {
-	*floor = sub($) {
+	*_floor = sub($) {
 		my $i = int($_[0]);
 		return $i == $_[0] || $_[0] > 0 ? $i : $i - 1;
 	}
 }
 
-sub check_dn($$) {
+sub _check_dn($$) {
 	croak "purported day number $_[0] is not an integer"
 		unless ref($_[0]) ? $_[0]->is_int : $_[0] == int($_[0]);
 	croak "purported day fraction $_[1] is out of range [0, 1)"
 		unless $_[1] >= 0 && $_[1] < 1;
 }
 
-sub ret_dn($) {
+sub _ret_dn($) {
 	my $dn = ref($_[0]) eq "Math::BigRat" ?
-			$_[0]->copy->bfloor : floor($_[0]);
+			$_[0]->copy->bfloor : _floor($_[0]);
 	return wantarray ? ($dn, $_[0] - $dn) : $dn;
 }
 
@@ -387,11 +823,11 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 	eval "sub ${src}_to_${dst}(\$${zp}) { \$_[0] + (${ediff}) ${z1} }";
 	push @EXPORT_OK, "${src}_to_${dst}";
 	eval "sub ${src}_to_${dst}n(\$${zp}) {
-		ret_dn(\$_[0] + (${ediff}) ${z1})
+		_ret_dn(\$_[0] + (${ediff}) ${z1})
 	}";
 	push @EXPORT_OK, "${src}_to_${dst}n";
 	eval "sub ${src}n_to_${dst}(\$\$${zp}) {
-		check_dn(\$_[0], \$_[1]);
+		_check_dn(\$_[0], \$_[1]);
 		\$_[0] + \$_[1] + (${ediff}) ${z2}
 	}";
 	push @EXPORT_OK, "${src}n_to_${dst}";
@@ -403,8 +839,8 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 		$tp = $tc = "";
 	}
 	eval "sub ${src}n_to_${dst}n(\$${tp}\$${zp}) { $tc
-		check_dn(\$_[0], \$_[1]);
-		ret_dn(\$_[0] + \$_[1] + ($ediff) ${z2})
+		_check_dn(\$_[0], \$_[1]);
+		_ret_dn(\$_[0] + \$_[1] + ($ediff) ${z2})
 	}";
 	push @EXPORT_OK, "${src}n_to_${dst}n";
 } }
@@ -424,7 +860,9 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006, 2007 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2006, 2007, 2009 Andrew Main (Zefram) <zefram@fysh.org>
+
+=head1 LICENSE
 
 This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
