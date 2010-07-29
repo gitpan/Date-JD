@@ -1,3 +1,17 @@
+version 0.004; 2010-07-29
+
+  * use simpler "parent" pragma in place of "base"
+
+  * check for required Perl version at runtime
+
+  * use full stricture in test suite
+
+  * in Build.PL, explicitly declare configure-time requirements
+
+  * remove bogus "exit 0" from Build.PL
+
+  * add MYMETA.yml to .cvsignore
+
 version 0.003; 2009-03-22
 
   * list all conversion functions explicitly in the documentation

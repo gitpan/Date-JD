@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.55.
+signed via the Module::Signature module, version 0.64.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,21 +14,21 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 5bad42261d00036065901d28c77a25465b7112a1 .cvsignore
-SHA1 e6baba59e9de059efbef655319280e0e73f0587f Build.PL
-SHA1 2933768d27cec936ac8a706fb36aa3dbbe3291b5 Changes
+SHA1 bf5524d9a97aed6cf426b5746851e798ab11f3ae .cvsignore
+SHA1 03a95cf08a6a39742ba451351f56284075304fbf Build.PL
+SHA1 a23f6987c531b23a9c92d7b58179899813202b35 Changes
 SHA1 e0b6f378558593195ba186b994625e7181f690be MANIFEST
-SHA1 dc8f07f161489772c6e8714abb75f5e9cd278070 META.yml
-SHA1 f39315b8e83202006e8a916c6a58725d104f75ec Makefile.PL
-SHA1 9df8d5b9a2fc564ef8703b57e41aa1b3518b3574 README
-SHA1 ad8bc9acc1456b4dba312cb5d888cbe146061a03 lib/Date/JD.pm
-SHA1 b60533c21a9d64dfe0c1ea69d7bbb319d52d8f55 t/d2d.t
-SHA1 0e141eecf3ca4903ef38d9413b5403a9ddb0392f t/pod_cvg.t
-SHA1 74a957cd8b93f25672ecc6aa578a671d084dd343 t/pod_syn.t
+SHA1 82eedf80a4ed771fbf3c3601ab706e2de1c893f6 META.yml
+SHA1 caae608231ffe78390c76451ade51a7cfc87a9f9 Makefile.PL
+SHA1 2cdfa23f337921dd9fd7c54c02e405fedbbd9d02 README
+SHA1 31952e4713f5adff52c18a09c10cf147bdc852cf lib/Date/JD.pm
+SHA1 be44cb976108055c1863c7802f1e248bd2098754 t/d2d.t
+SHA1 904d9a4f76525e2303e4b0c168c68230f223c8de t/pod_cvg.t
+SHA1 65c75abdef6f01a5d1588a307f2ddfe2333dc961 t/pod_syn.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.9 (GNU/Linux)
 
-iEYEARECAAYFAknGipkACgkQOV9mt2VyAVGnOACbBSllTsKcGSIIe5C26RU4jAX3
-aYMAn1AE1cunWAfcMLErkhx1xPfXfBO2
-=dEfB
+iEYEARECAAYFAkxR8IMACgkQOV9mt2VyAVHh4gCdEoM2PSlrIXyyjghBiQsS0mg/
+L6MAnRbbNJiy8zoiot0mKPgoZOwZvWEq
+=Lz5l
 -----END PGP SIGNATURE-----

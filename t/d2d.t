@@ -1,3 +1,6 @@
+use warnings;
+use strict;
+
 use Test::More tests => 1 + 8*2*8*8*4;
 
 BEGIN { use_ok "Date::JD", qw(jd_to_jd jd_to_mjdn mjdn_to_cjd cjdn_to_ldn); }
@@ -111,3 +114,5 @@ check({
 	rd => 682458.4375,
 	ld => 104723.4375,
 }, -0.0625);
+
+1;
