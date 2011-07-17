@@ -1,3 +1,18 @@
+version 0.005; 2011-07-17
+
+  * introduce new conversion functions *_to_*nn and *_to_*nf, which
+    do the job of *_to_*n but without the annoying context-sensitive
+    output convention
+
+  * reword the documentation of all the conversion functions
+
+  * skip Math::BigRat tests if Math::BigRat is of a version that doesn't
+    work adequately
+
+  * include META.json in distribution
+
+  * add MYMETA.json to .cvsignore
+
 version 0.004; 2010-07-29
 
   * use simpler "parent" pragma in place of "base"

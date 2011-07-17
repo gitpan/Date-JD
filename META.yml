@@ -14,10 +14,9 @@ configure_requires:
   strict: 0
   warnings: 0
 conflicts:
-  Math::BigRat: '< 0.04'
-distribution_type: module
+  Math::BigRat: 0
 dynamic_config: 0
-generated_by: 'Module::Build version 0.3607'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110930001'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,7 +25,7 @@ name: Date-JD
 provides:
   Date::JD:
     file: lib/Date/JD.pm
-    version: 0.004
+    version: 0.005
 requires:
   Carp: 0
   Exporter: 0
@@ -36,4 +35,4 @@ requires:
   warnings: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.004
+version: 0.005

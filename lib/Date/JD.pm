@@ -4,13 +4,13 @@ Date::JD - conversion between flavours of Julian Date
 
 =head1 SYNOPSIS
 
-	use Date::JD qw(jd_to_mjd mjd_to_cjdn cjdn_to_rd);
+	use Date::JD qw(jd_to_mjd mjd_to_cjdnf cjdn_to_rd);
 
 	$mjd = jd_to_mjd($jd);
-	($cjdn, $cjdf) = mjd_to_cjdn($mjd, $tz);
+	($cjdn, $cjdf) = mjd_to_cjdnf($mjd, $tz);
 	$rd = cjdn_to_rd($cjdn, $cjdf);
 
-	# and 253 other conversion functions
+	# and 509 other conversion functions
 
 =head1 DESCRIPTION
 
@@ -47,8 +47,9 @@ integral and fractional varieties.  Generally, there is a quantity named
 (an integer plus a fraction) and a corresponding quantity named "XYZDN"
 ("XYZ Day Number") which is a count of complete days since the same epoch.
 XYZDN is the integral part of XYZD.  There is also a quantity named
-"XYZDF" ("XYZ Day Fraction") which is a count of fractional days since the
-XYZDN changed.  XYZDF is the fractional part of XYZD, in the range [0, 1).
+"XYZDF" ("XYZ Day Fraction") which is a count of fractional days since
+the XYZDN changed (whether that is noon or midnight).  XYZDF is the
+fractional part of XYZD, in the range [0, 1).
 
 This quantity naming pattern is derived from JD (Julian Date) and JDN
 (Julian Day Number) which have the described correspondence.  Most of
@@ -176,7 +177,7 @@ use strict;
 
 use Carp qw(croak);
 
-our $VERSION = "0.004";
+our $VERSION = "0.005";
 
 use parent "Exporter";
 our @EXPORT_OK;
@@ -204,7 +205,7 @@ The use of C<Math::BigRat> is recommended to avoid these problems.
 With C<Math::BigRat> the results are exact.
 
 There are conversion functions between all pairs of day count systems.
-This is a total of 256 conversion functions (including 16 identity
+This is a total of 512 conversion functions (including 32 identity
 functions).
 
 When converting between timezone-relative counts (CJD, RD, LD) and
@@ -348,10 +349,279 @@ and MJD) or between timezone-relative counts (e.g., between CJD and LD).
 
 =item ld_to_ld(LD)
 
-Conversions between fractional day counts principally involve a change
-of epoch.  The input identifies a point in time, as a fractional day
-count of input flavour.  The function returns the same point in time,
-represented as a fractional day count of output flavour.
+These functions convert from one continuous day count to another.
+This principally involve a change of epoch.  The input identifies a
+point in time, as a continuous day count of input flavour.  The function
+returns the same point in time, represented as a continuous day count
+of output flavour.
+
+=item jd_to_jdnn(JD)
+
+=item jd_to_rjdnn(JD)
+
+=item jd_to_mjdnn(JD)
+
+=item jd_to_djdnn(JD)
+
+=item jd_to_tjdnn(JD)
+
+=item jd_to_cjdnn(JD, ZONE)
+
+=item jd_to_rdnn(JD, ZONE)
+
+=item jd_to_ldnn(JD, ZONE)
+
+=item rjd_to_jdnn(RJD)
+
+=item rjd_to_rjdnn(RJD)
+
+=item rjd_to_mjdnn(RJD)
+
+=item rjd_to_djdnn(RJD)
+
+=item rjd_to_tjdnn(RJD)
+
+=item rjd_to_cjdnn(RJD, ZONE)
+
+=item rjd_to_rdnn(RJD, ZONE)
+
+=item rjd_to_ldnn(RJD, ZONE)
+
+=item mjd_to_jdnn(MJD)
+
+=item mjd_to_rjdnn(MJD)
+
+=item mjd_to_mjdnn(MJD)
+
+=item mjd_to_djdnn(MJD)
+
+=item mjd_to_tjdnn(MJD)
+
+=item mjd_to_cjdnn(MJD, ZONE)
+
+=item mjd_to_rdnn(MJD, ZONE)
+
+=item mjd_to_ldnn(MJD, ZONE)
+
+=item djd_to_jdnn(DJD)
+
+=item djd_to_rjdnn(DJD)
+
+=item djd_to_mjdnn(DJD)
+
+=item djd_to_djdnn(DJD)
+
+=item djd_to_tjdnn(DJD)
+
+=item djd_to_cjdnn(DJD, ZONE)
+
+=item djd_to_rdnn(DJD, ZONE)
+
+=item djd_to_ldnn(DJD, ZONE)
+
+=item tjd_to_jdnn(TJD)
+
+=item tjd_to_rjdnn(TJD)
+
+=item tjd_to_mjdnn(TJD)
+
+=item tjd_to_djdnn(TJD)
+
+=item tjd_to_tjdnn(TJD)
+
+=item tjd_to_cjdnn(TJD, ZONE)
+
+=item tjd_to_rdnn(TJD, ZONE)
+
+=item tjd_to_ldnn(TJD, ZONE)
+
+=item cjd_to_jdnn(CJD, ZONE)
+
+=item cjd_to_rjdnn(CJD, ZONE)
+
+=item cjd_to_mjdnn(CJD, ZONE)
+
+=item cjd_to_djdnn(CJD, ZONE)
+
+=item cjd_to_tjdnn(CJD, ZONE)
+
+=item cjd_to_cjdnn(CJD)
+
+=item cjd_to_rdnn(CJD)
+
+=item cjd_to_ldnn(CJD)
+
+=item rd_to_jdnn(RD, ZONE)
+
+=item rd_to_rjdnn(RD, ZONE)
+
+=item rd_to_mjdnn(RD, ZONE)
+
+=item rd_to_djdnn(RD, ZONE)
+
+=item rd_to_tjdnn(RD, ZONE)
+
+=item rd_to_cjdnn(RD)
+
+=item rd_to_rdnn(RD)
+
+=item rd_to_ldnn(RD)
+
+=item ld_to_jdnn(LD, ZONE)
+
+=item ld_to_rjdnn(LD, ZONE)
+
+=item ld_to_mjdnn(LD, ZONE)
+
+=item ld_to_djdnn(LD, ZONE)
+
+=item ld_to_tjdnn(LD, ZONE)
+
+=item ld_to_cjdnn(LD)
+
+=item ld_to_rdnn(LD)
+
+=item ld_to_ldnn(LD)
+
+These functions convert from a continuous day count to an integral day
+count.  The input identifies a point in time, as a continuous day count
+of input flavour.  The function returns the day number of output flavour
+that applies at that instant.  The process throws away information about
+the time of (output-flavour) day.
+
+=item jd_to_jdnf(JD)
+
+=item jd_to_rjdnf(JD)
+
+=item jd_to_mjdnf(JD)
+
+=item jd_to_djdnf(JD)
+
+=item jd_to_tjdnf(JD)
+
+=item jd_to_cjdnf(JD, ZONE)
+
+=item jd_to_rdnf(JD, ZONE)
+
+=item jd_to_ldnf(JD, ZONE)
+
+=item rjd_to_jdnf(RJD)
+
+=item rjd_to_rjdnf(RJD)
+
+=item rjd_to_mjdnf(RJD)
+
+=item rjd_to_djdnf(RJD)
+
+=item rjd_to_tjdnf(RJD)
+
+=item rjd_to_cjdnf(RJD, ZONE)
+
+=item rjd_to_rdnf(RJD, ZONE)
+
+=item rjd_to_ldnf(RJD, ZONE)
+
+=item mjd_to_jdnf(MJD)
+
+=item mjd_to_rjdnf(MJD)
+
+=item mjd_to_mjdnf(MJD)
+
+=item mjd_to_djdnf(MJD)
+
+=item mjd_to_tjdnf(MJD)
+
+=item mjd_to_cjdnf(MJD, ZONE)
+
+=item mjd_to_rdnf(MJD, ZONE)
+
+=item mjd_to_ldnf(MJD, ZONE)
+
+=item djd_to_jdnf(DJD)
+
+=item djd_to_rjdnf(DJD)
+
+=item djd_to_mjdnf(DJD)
+
+=item djd_to_djdnf(DJD)
+
+=item djd_to_tjdnf(DJD)
+
+=item djd_to_cjdnf(DJD, ZONE)
+
+=item djd_to_rdnf(DJD, ZONE)
+
+=item djd_to_ldnf(DJD, ZONE)
+
+=item tjd_to_jdnf(TJD)
+
+=item tjd_to_rjdnf(TJD)
+
+=item tjd_to_mjdnf(TJD)
+
+=item tjd_to_djdnf(TJD)
+
+=item tjd_to_tjdnf(TJD)
+
+=item tjd_to_cjdnf(TJD, ZONE)
+
+=item tjd_to_rdnf(TJD, ZONE)
+
+=item tjd_to_ldnf(TJD, ZONE)
+
+=item cjd_to_jdnf(CJD, ZONE)
+
+=item cjd_to_rjdnf(CJD, ZONE)
+
+=item cjd_to_mjdnf(CJD, ZONE)
+
+=item cjd_to_djdnf(CJD, ZONE)
+
+=item cjd_to_tjdnf(CJD, ZONE)
+
+=item cjd_to_cjdnf(CJD)
+
+=item cjd_to_rdnf(CJD)
+
+=item cjd_to_ldnf(CJD)
+
+=item rd_to_jdnf(RD, ZONE)
+
+=item rd_to_rjdnf(RD, ZONE)
+
+=item rd_to_mjdnf(RD, ZONE)
+
+=item rd_to_djdnf(RD, ZONE)
+
+=item rd_to_tjdnf(RD, ZONE)
+
+=item rd_to_cjdnf(RD)
+
+=item rd_to_rdnf(RD)
+
+=item rd_to_ldnf(RD)
+
+=item ld_to_jdnf(LD, ZONE)
+
+=item ld_to_rjdnf(LD, ZONE)
+
+=item ld_to_mjdnf(LD, ZONE)
+
+=item ld_to_djdnf(LD, ZONE)
+
+=item ld_to_tjdnf(LD, ZONE)
+
+=item ld_to_cjdnf(LD)
+
+=item ld_to_rdnf(LD)
+
+=item ld_to_ldnf(LD)
+
+These functions convert from a continuous day count to an integral day
+count with separate fraction.  The input identifies a point in time,
+as a continuous day count of input flavour.  The function returns a
+list of two items: the day number and fractional day of output flavour,
+which together identify the same point in time as the input.
 
 =item jd_to_jdn(JD)
 
@@ -481,15 +751,19 @@ represented as a fractional day count of output flavour.
 
 =item ld_to_ldn(LD)
 
-These conversion functions go from a fractional count to an integral
-count.  The input identifies a point in time, as a fractional day count
-of input flavour.  The function determines the day number of output
-flavour that applies at that instant.  In scalar context only this
-integral day number is returned.  In list context a list of two values
-is returned: the integral day number and the day fraction in the range
-[0, 1).  The day fraction, representing the time of day, is relative to
-the instant that the integral day number started to apply, whether that
-is noon or midnight.
+These functions convert from a continuous day count to an integral day
+count, possibly with separate fraction.  The input identifies a point in
+time, as a continuous day count of input flavour.  If called in scalar
+context, the function returns the day number of output flavour that
+applies at that instant, throwing away information about the time of
+(output-flavour) day.  If called in list context, the function returns a
+list of two items: the day number and fractional day of output flavour,
+which together identify the same point in time as the input.
+
+These functions are not recommended, because the context-sensitive
+return convention makes their use error-prone.  They are retained for
+backward compatibility.  You should prefer to use the more specific
+functions shown above.
 
 =item jdn_to_jd(JDN, JDF)
 
@@ -619,13 +893,283 @@ is noon or midnight.
 
 =item ldn_to_ld(LDN, LDF)
 
-These conversion functions go from an integral count to a fractional
-count.  The input identifies a point in time, as an integral day number of
-input flavour plus day fraction in the range [0, 1).  The day fraction,
-representing the time of day, is relative to the instant that the
-integral day number started to apply, whether that is noon or midnight.
-The identified point in time is returned in the form of a fractional
-day number of output flavour.
+These functions convert from an integral day count with separate fraction
+to a continuous day count.  The input identifies a point in time, as
+an integral day number of input flavour plus day fraction in the range
+[0, 1).  The function returns the same point in time, represented as a
+continuous day count of output flavour.
+
+=item jdn_to_jdnn(JDN[, JDF])
+
+=item jdn_to_rjdnn(JDN[, JDF])
+
+=item jdn_to_mjdnn(JDN, JDF)
+
+=item jdn_to_djdnn(JDN[, JDF])
+
+=item jdn_to_tjdnn(JDN, JDF)
+
+=item jdn_to_cjdnn(JDN, JDF, ZONE)
+
+=item jdn_to_rdnn(JDN, JDF, ZONE)
+
+=item jdn_to_ldnn(JDN, JDF, ZONE)
+
+=item rjdn_to_jdnn(RJDN[, RJDF])
+
+=item rjdn_to_rjdnn(RJDN[, RJDF])
+
+=item rjdn_to_mjdnn(RJDN, RJDF)
+
+=item rjdn_to_djdnn(RJDN[, RJDF])
+
+=item rjdn_to_tjdnn(RJDN, RJDF)
+
+=item rjdn_to_cjdnn(RJDN, RJDF, ZONE)
+
+=item rjdn_to_rdnn(RJDN, RJDF, ZONE)
+
+=item rjdn_to_ldnn(RJDN, RJDF, ZONE)
+
+=item mjdn_to_jdnn(MJDN, MJDF)
+
+=item mjdn_to_rjdnn(MJDN, MJDF)
+
+=item mjdn_to_mjdnn(MJDN[, MJDF])
+
+=item mjdn_to_djdnn(MJDN, MJDF)
+
+=item mjdn_to_tjdnn(MJDN[, MJDF])
+
+=item mjdn_to_cjdnn(MJDN, MJDF, ZONE)
+
+=item mjdn_to_rdnn(MJDN, MJDF, ZONE)
+
+=item mjdn_to_ldnn(MJDN, MJDF, ZONE)
+
+=item djdn_to_jdnn(DJDN[, DJDF])
+
+=item djdn_to_rjdnn(DJDN[, DJDF])
+
+=item djdn_to_mjdnn(DJDN, DJDF)
+
+=item djdn_to_djdnn(DJDN[, DJDF])
+
+=item djdn_to_tjdnn(DJDN, DJDF)
+
+=item djdn_to_cjdnn(DJDN, DJDF, ZONE)
+
+=item djdn_to_rdnn(DJDN, DJDF, ZONE)
+
+=item djdn_to_ldnn(DJDN, DJDF, ZONE)
+
+=item tjdn_to_jdnn(TJDN, TJDF)
+
+=item tjdn_to_rjdnn(TJDN, TJDF)
+
+=item tjdn_to_mjdnn(TJDN[, TJDF])
+
+=item tjdn_to_djdnn(TJDN, TJDF)
+
+=item tjdn_to_tjdnn(TJDN[, TJDF])
+
+=item tjdn_to_cjdnn(TJDN, TJDF, ZONE)
+
+=item tjdn_to_rdnn(TJDN, TJDF, ZONE)
+
+=item tjdn_to_ldnn(TJDN, TJDF, ZONE)
+
+=item cjdn_to_jdnn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_rjdnn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_mjdnn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_djdnn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_tjdnn(CJDN, CJDF, ZONE)
+
+=item cjdn_to_cjdnn(CJDN[, CJDF])
+
+=item cjdn_to_rdnn(CJDN[, CJDF])
+
+=item cjdn_to_ldnn(CJDN[, CJDF])
+
+=item rdn_to_jdnn(RDN, RDF, ZONE)
+
+=item rdn_to_rjdnn(RDN, RDF, ZONE)
+
+=item rdn_to_mjdnn(RDN, RDF, ZONE)
+
+=item rdn_to_djdnn(RDN, RDF, ZONE)
+
+=item rdn_to_tjdnn(RDN, RDF, ZONE)
+
+=item rdn_to_cjdnn(RDN[, RDF])
+
+=item rdn_to_rdnn(RDN[, RDF])
+
+=item rdn_to_ldnn(RDN[, RDF])
+
+=item ldn_to_jdnn(LDN, LDF, ZONE)
+
+=item ldn_to_rjdnn(LDN, LDF, ZONE)
+
+=item ldn_to_mjdnn(LDN, LDF, ZONE)
+
+=item ldn_to_djdnn(LDN, LDF, ZONE)
+
+=item ldn_to_tjdnn(LDN, LDF, ZONE)
+
+=item ldn_to_cjdnn(LDN[, LDF])
+
+=item ldn_to_rdnn(LDN[, LDF])
+
+=item ldn_to_ldnn(LDN[, LDF])
+
+These functions convert from an integral day count with separate fraction
+to an integral day count.  The input identifies a point in time, as an
+integral day number of input flavour plus day fraction in the range
+[0, 1).  The function returns the day number of output flavour that
+applies at that instant.  The process throws away information about
+the time of (output-flavour) day.  If converting between systems that
+delimit days identically (e.g., between JD and RJD), the day fraction
+makes no difference and may be omitted from the input.
+
+=item jdn_to_jdnf(JDN, JDF)
+
+=item jdn_to_rjdnf(JDN, JDF)
+
+=item jdn_to_mjdnf(JDN, JDF)
+
+=item jdn_to_djdnf(JDN, JDF)
+
+=item jdn_to_tjdnf(JDN, JDF)
+
+=item jdn_to_cjdnf(JDN, JDF, ZONE)
+
+=item jdn_to_rdnf(JDN, JDF, ZONE)
+
+=item jdn_to_ldnf(JDN, JDF, ZONE)
+
+=item rjdn_to_jdnf(RJDN, RJDF)
+
+=item rjdn_to_rjdnf(RJDN, RJDF)
+
+=item rjdn_to_mjdnf(RJDN, RJDF)
+
+=item rjdn_to_djdnf(RJDN, RJDF)
+
+=item rjdn_to_tjdnf(RJDN, RJDF)
+
+=item rjdn_to_cjdnf(RJDN, RJDF, ZONE)
+
+=item rjdn_to_rdnf(RJDN, RJDF, ZONE)
+
+=item rjdn_to_ldnf(RJDN, RJDF, ZONE)
+
+=item mjdn_to_jdnf(MJDN, MJDF)
+
+=item mjdn_to_rjdnf(MJDN, MJDF)
+
+=item mjdn_to_mjdnf(MJDN, MJDF)
+
+=item mjdn_to_djdnf(MJDN, MJDF)
+
+=item mjdn_to_tjdnf(MJDN, MJDF)
+
+=item mjdn_to_cjdnf(MJDN, MJDF, ZONE)
+
+=item mjdn_to_rdnf(MJDN, MJDF, ZONE)
+
+=item mjdn_to_ldnf(MJDN, MJDF, ZONE)
+
+=item djdn_to_jdnf(DJDN, DJDF)
+
+=item djdn_to_rjdnf(DJDN, DJDF)
+
+=item djdn_to_mjdnf(DJDN, DJDF)
+
+=item djdn_to_djdnf(DJDN, DJDF)
+
+=item djdn_to_tjdnf(DJDN, DJDF)
+
+=item djdn_to_cjdnf(DJDN, DJDF, ZONE)
+
+=item djdn_to_rdnf(DJDN, DJDF, ZONE)
+
+=item djdn_to_ldnf(DJDN, DJDF, ZONE)
+
+=item tjdn_to_jdnf(TJDN, TJDF)
+
+=item tjdn_to_rjdnf(TJDN, TJDF)
+
+=item tjdn_to_mjdnf(TJDN, TJDF)
+
+=item tjdn_to_djdnf(TJDN, TJDF)
+
+=item tjdn_to_tjdnf(TJDN, TJDF)
+
+=item tjdn_to_cjdnf(TJDN, TJDF, ZONE)
+
+=item tjdn_to_rdnf(TJDN, TJDF, ZONE)
+
+=item tjdn_to_ldnf(TJDN, TJDF, ZONE)
+
+=item cjdn_to_jdnf(CJDN, CJDF, ZONE)
+
+=item cjdn_to_rjdnf(CJDN, CJDF, ZONE)
+
+=item cjdn_to_mjdnf(CJDN, CJDF, ZONE)
+
+=item cjdn_to_djdnf(CJDN, CJDF, ZONE)
+
+=item cjdn_to_tjdnf(CJDN, CJDF, ZONE)
+
+=item cjdn_to_cjdnf(CJDN, CJDF)
+
+=item cjdn_to_rdnf(CJDN, CJDF)
+
+=item cjdn_to_ldnf(CJDN, CJDF)
+
+=item rdn_to_jdnf(RDN, RDF, ZONE)
+
+=item rdn_to_rjdnf(RDN, RDF, ZONE)
+
+=item rdn_to_mjdnf(RDN, RDF, ZONE)
+
+=item rdn_to_djdnf(RDN, RDF, ZONE)
+
+=item rdn_to_tjdnf(RDN, RDF, ZONE)
+
+=item rdn_to_cjdnf(RDN, RDF)
+
+=item rdn_to_rdnf(RDN, RDF)
+
+=item rdn_to_ldnf(RDN, RDF)
+
+=item ldn_to_jdnf(LDN, LDF, ZONE)
+
+=item ldn_to_rjdnf(LDN, LDF, ZONE)
+
+=item ldn_to_mjdnf(LDN, LDF, ZONE)
+
+=item ldn_to_djdnf(LDN, LDF, ZONE)
+
+=item ldn_to_tjdnf(LDN, LDF, ZONE)
+
+=item ldn_to_cjdnf(LDN, LDF)
+
+=item ldn_to_rdnf(LDN, LDF)
+
+=item ldn_to_ldnf(LDN, LDF)
+
+These functions convert from one integral day count with separate
+fraction to another.  The input identifies a point in time, as an
+integral day number of input flavour plus day fraction in the range
+[0, 1).  The function returns a list of two items: the day number and
+fractional day of output flavour, which together identify the same point
+in time as the input.
 
 =item jdn_to_jdn(JDN[, JDF])
 
@@ -755,29 +1299,26 @@ day number of output flavour.
 
 =item ldn_to_ldn(LDN[, LDF])
 
-These conversion functions go from an integral count to another integral
-count.  They can be used either to convert only a day number or to
-convert a point in time using integer-plus-fraction form.  The output
-convention is identical to that for C<jd_to_jdn> et al, including the
-variation depending on calling context.
+These functions convert from an integral day count with separate fraction
+to an integral day count, possibly with separate fraction.  The input
+identifies a point in time, as an integral day number of input flavour
+plus day fraction in the range [0, 1).  If called in scalar context, the
+function returns the day number of output flavour that applies at that
+instant, throwing away information about the time of (output-flavour) day.
+If called in list context, the function returns a list of two items:
+the day number and fractional day of output flavour, which together
+identify the same point in time as the input.
 
-If converting a point in time, the input identifies it as an integral
-day number of input flavour plus day fraction in the range [0, 1).
-The day fraction, representing the time of day, is relative to the
-instant that the integral day number started to apply, whether that is
-noon or midnight.  The same point in time is (in list context) returned
-as a list of integral day number of output flavour and the day fraction
-in the range [0, 1).
+If converting between systems that delimit days identically (e.g.,
+between JD and RJD), the day fraction makes no difference to the integral
+day number of the output, and may be omitted from the input.  If the day
+fraction is extracted from the output when it wasn't supplied as input,
+it will default to zero.
 
-If it is desired only to convert integral day numbers, it is still
-necessary to consider time of day, because in the general case the days
-are delimited differently by the input and output day count flavours.
-A day fraction must be specified if there is such a difference, and
-the conversion is calculated for the point in time thus identified.
-To perform a conversion for a large part of the day, give a representative
-time of day within it.  If converting between systems that delimit days
-identically (e.g., between JD and RJD), the day fraction is optional
-and defaults to zero.
+These functions are not recommended, because the context-sensitive
+return convention makes their use error-prone.  They are retained for
+backward compatibility.  You should prefer to use the more specific
+functions shown above.
 
 =cut
 
@@ -799,10 +1340,20 @@ sub _check_dn($$) {
 		unless $_[1] >= 0 && $_[1] < 1;
 }
 
-sub _ret_dn($) {
+sub _ret_dnn($) {
 	my $dn = ref($_[0]) eq "Math::BigRat" ?
 			$_[0]->copy->bfloor : _floor($_[0]);
-	return wantarray ? ($dn, $_[0] - $dn) : $dn;
+	return $dn;
+}
+
+sub _ret_dnf($) {
+	my $dn = &_ret_dnn;
+	return ($dn, $_[0] - $dn);
+}
+
+sub _ret_dn($) {
+	my $dn = &_ret_dnn;
+	return wantarray ? &_ret_dnf : &_ret_dnn;
 }
 
 foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
@@ -823,6 +1374,14 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 	}
 	eval "sub ${src}_to_${dst}(\$${zp}) { \$_[0] + (${ediff}) ${z1} }";
 	push @EXPORT_OK, "${src}_to_${dst}";
+	eval "sub ${src}_to_${dst}nn(\$${zp}) {
+		_ret_dnn(\$_[0] + (${ediff}) ${z1})
+	}";
+	push @EXPORT_OK, "${src}_to_${dst}nn";
+	eval "sub ${src}_to_${dst}nf(\$${zp}) {
+		_ret_dnf(\$_[0] + (${ediff}) ${z1})
+	}";
+	push @EXPORT_OK, "${src}_to_${dst}nf";
 	eval "sub ${src}_to_${dst}n(\$${zp}) {
 		_ret_dn(\$_[0] + (${ediff}) ${z1})
 	}";
@@ -839,6 +1398,16 @@ foreach my $src (keys %jd_flavours) { foreach my $dst (keys %jd_flavours) {
 	} else {
 		$tp = $tc = "";
 	}
+	eval "sub ${src}n_to_${dst}nn(\$${tp}\$${zp}) { $tc
+		_check_dn(\$_[0], \$_[1]);
+		_ret_dnn(\$_[0] + \$_[1] + ($ediff) ${z2})
+	}";
+	push @EXPORT_OK, "${src}n_to_${dst}nn";
+	eval "sub ${src}n_to_${dst}nf(\$\$${zp}) {
+		_check_dn(\$_[0], \$_[1]);
+		_ret_dnf(\$_[0] + \$_[1] + ($ediff) ${z2})
+	}";
+	push @EXPORT_OK, "${src}n_to_${dst}nf";
 	eval "sub ${src}n_to_${dst}n(\$${tp}\$${zp}) { $tc
 		_check_dn(\$_[0], \$_[1]);
 		_ret_dn(\$_[0] + \$_[1] + ($ediff) ${z2})
@@ -861,7 +1430,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006, 2007, 2009, 2010
+Copyright (C) 2006, 2007, 2009, 2010, 2011
 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
